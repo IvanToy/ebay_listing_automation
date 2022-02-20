@@ -1,0 +1,94 @@
+:root {
+  --bg-main: #b5b682;
+  --bg-containers: #033f63;
+  --bg-form: #28666e;
+  --bg-button: #fedc97;
+  --bg-title: #7c9885;
+  --padding-container: 1rem;
+  --radius: 3px;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-main);
+  text-align: center;
+}
+
+h1 {
+  display: inline-block;
+  background-color: var(--bg-title);
+  margin-top: 1rem;
+  padding: 0.5rem;
+  font-family: Arial, Helvetica, sans-serif;
+  border-radius: var(--radius);
+}
+
+.form {
+  border: 1px solid #033f63;
+  border-radius: var(--radius);
+  width: 90%;
+  max-width: 43.75rem;
+  height: 16rem;
+  margin: 7rem auto 0;
+  background-color: var(--bg-form);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-evenly;
+  box-shadow: 0 0.3rem 0.4rem rgba(0, 0, 0, 0.5);
+}
+
+.container-1 {
+  background-color: var(--bg-containers);
+  padding: var(--padding-container);
+  margin-top: 0.5rem;
+  border-radius: var(--radius);
+}
+.container-2 {
+  background-color: var(--bg-containers);
+  padding: var(--padding-container);
+  border-radius: var(--radius);
+}
+
+.container-3 {
+  background-color: var(--bg-containers);
+  padding: var(--padding-container);
+  align-self: flex-end;
+  margin-bottom: 0.5rem;
+  border-radius: var(--radius);
+}
+
+.button-submit {
+  background-color: var(--bg-button);
+  border: none;
+  padding: 0.1rem;
+  cursor: pointer;
+}
+
+.container-2 div select {
+  width: 7.5rem;
+}
+
+.container-1 div,
+.container-2 div,
+.container-3 div {
+  margin: 0.2rem;
+}
+
+@media (max-width: 591px) {
+  .form {
+    width: 90%;
+    height: 20rem;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  .container-3 {
+    align-self: center;
+  }
+}

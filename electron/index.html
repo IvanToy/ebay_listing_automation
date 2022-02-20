@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self'" />
+    <link href="./styles.css" rel="stylesheet" />
+    <title>Listing Automation</title>
+  </head>
+  <body>
+    <h1>Listing Automation</h1>
+
+    <form class="form">
+      <div class="container-1">
+        <label class="form-label-1" for="vintage">Vintage</label>
+
+        <div>
+          <select name="vintage-glasses" class="form-select-1" id="vintage">
+            <option value="choose-option">Choose Options</option>
+            <option value="vintage-prescription">Prescription</option>
+            <option value="vintage-original">Original</option>
+            <option value="vintage-frames">Frames</option>
+          </select>
+        </div>
+      </div>
+      <div class="container-3">
+        <label class="bin-number-label" for="bin-number"
+          >Choose bin's number</label
+        >
+        <div>
+          <input id="bin-number" class="bin-number" type="text" required />
+        </div>
+        <button type="submit" class="button-submit">Submit</button>
+      </div>
+      <div class="container-2">
+        <label class="form-label-2" for="modern">Modern</label>
+        <div>
+          <select name="modern-glasses" class="form-select-2" id="modern">
+            <option value="choose-option">Choose Options</option>
+            <option value="modern-prescription-male">Prescription Male</option>
+            <option value="modern-prescription-female">
+              Prescription Female
+            </option>
+            <option value="modern-original-male">Original Male</option>
+            <option value="modern-original-female">Original Female</option>
+            <option value="modern-frames-male">Frames Male</option>
+            <option value="modern-frames-female">Frames Female</option>
+          </select>
+        </div>
+      </div>
+    </form>
+
+    <script src="index.js"></script>
+  </body>
+</html>
