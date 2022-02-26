@@ -3,9 +3,11 @@ const { urlAndIdsObject } = require("./selectors-urls.js");
 
 const main = (args) => {
   const [urlOption, binNumber] = args;
-  const [category, spec, gender] = urlOption.split("-");
+  const splittedUrl = urlOption.split("-");
+  const [category, spec, gender] = splittedUrl;
   let id;
-  if (splittedUrlOption.length === 2) {
+
+  if (splittedUrl.length === 2) {
     id = urlAndIdsObject[category][spec];
   } else {
     id = urlAndIdsObject[category][spec][gender];

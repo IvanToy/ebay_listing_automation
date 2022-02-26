@@ -2,12 +2,10 @@ const fs = require("fs");
 const puppeteer = require("puppeteer");
 const chrome = require("chrome-cookies-secure");
 const getTextFromImage = require("./tesseract.js");
+const detailsFilling = require("./detailsFilling.js");
+const descriptionFilling = require("./descriptionFilling.js");
 const { selectorsObject, urlAndIdsObject } = require("./selectors-urls");
-//todo
-//1)finish description done
-//2) flag to terminate OCR done
-//3)on second iteration delete photos done
-//4)create new listing ?
+
 const fsPromises = fs.promises;
 
 const listingGlasses = async (url, binNumber, category, spec) => {
@@ -41,6 +39,7 @@ const listingGlasses = async (url, binNumber, category, spec) => {
     const browser = await puppeteer.launch({
       headless: false,
       defaultViewport: null,
+      slowMo: 250,
       args: ["--start-maximized"],
     });
 
@@ -54,7 +53,7 @@ const listingGlasses = async (url, binNumber, category, spec) => {
 
     const photos = await fsPromises.readdir(path);
 
-    let j = 1;
+    let j = 0;
 
     for (let i = 0; i < photos.length; i += 6) {
       let descriptions;
@@ -64,22 +63,22 @@ const listingGlasses = async (url, binNumber, category, spec) => {
         descriptions = await getTextFromImage(`${path}/${photos[i]}`, true);
       }
 
-      const descriptionBody = `${category && "Vintage"}  ${
-        descriptions.brand
-      } ${descriptions.model}  ${descriptions.color} ${descriptions.style} ${
-        category === "original" ? "frames" : "FRAMES ONLY"
-      } ${descriptions.made}`;
+      const descriptionBody = `${category == "vintage" ? "Vintage" : null} 
+     ${descriptions.brand !== "" ? descriptions.brand : null} 
+     ${descriptions.model !== "" ? descriptions.model : null} 
+      ${descriptions.color} 
+      ${descriptions.style}
+       ${spec === "original" ? "Sunglasses Frames " : "Sunglasses FRAMES ONLY"}
+       ${descriptions.made !== "" ? descriptions.made : null}`;
 
       const photosSelected = photos
         .slice(i + 1, i + 5 + 1)
         .map((photo) => `${path}/${photo}`);
 
-      console.log(photosSelected);
-
       const iFramePhoto = await page.$(selectorsObject.photos);
       const framePhoto = await iFramePhoto.contentFrame();
 
-      if (j > 1) {
+      if (j >= 1) {
         await framePhoto.$eval(selectorsObject.deletePhotosButton, (el) =>
           el.click()
         );
@@ -96,178 +95,53 @@ const listingGlasses = async (url, binNumber, category, spec) => {
 
       await fileChooser.accept([...photosSelected]);
 
-      await page.click(selectorsObject.title, { clickCount: 3 });
-
-      await page.type(selectorsObject.title, descriptionBody, { delay: 100 });
-
-      await page.click(selectorsObject.label, { clickCount: 2 });
-
-      await page.type(selectorsObject.label, descriptions.label, {
-        delay: 100,
-      });
-
-      await page.click(selectorsObject.brand, { clickCount: 2 });
-
-      await page.type(selectorsObject.brand, descriptions.brand, {
-        delay: 100,
-      });
-
-      await page.click(selectorsObject.style, { clickCount: 2 });
-
-      await page.type(selectorsObject.style, descriptions.style, {
-        delay: 100,
-      });
-
-      await page.click(selectorsObject.color, { clickCount: 2 });
-
-      await page.type(selectorsObject.color, descriptions.color, {
-        delay: 100,
-      });
-
-      await page.click(selectorsObject.material, { clickCount: 2 });
-
-      await page.type(selectorsObject.material, descriptions.material, {
-        delay: 100,
-      });
-
-      await page.click(selectorsObject.made, { clickCount: 2 });
-
-      await page.type(selectorsObject.made, descriptions.made, { delay: 100 });
-
-      await page.click(selectorsObject.temple, { clickCount: 2 });
-
-      await page.type(selectorsObject.temple, descriptions.temple, {
-        delay: 100,
-      });
-
-      await page.click(width, { clickCount: 2 });
-
-      await page.type(width, descriptions.width, { delay: 100 });
-
-      await page.click(height, { clickCount: 2 });
-
-      await page.type(height, descriptions.height, { delay: 100 });
-
-      await page.click(bridge, { clickCount: 2 });
-
-      await page.type(bridge, descriptions.bridge, { delay: 100 });
+      await detailsFilling(
+        width,
+        height,
+        bridge,
+        descriptions,
+        descriptionBody,
+        page,
+        category
+      );
 
       const iFrameDescription = await page.$(frameDes);
       const frameDescription = await iFrameDescription.contentFrame();
+      await descriptionFilling(
+        category,
+        spec,
+        frameDescription,
+        descriptionBody,
+        page,
+        j
+      );
 
-      if (category === "vintage" && spec === "prescription") {
-        if (j === 1) {
-          let [elHandle] = await frameDescription.$x("/html/body/text()");
-          await elHandle.evaluate((el) => {
-            el.remove();
-          }, elHandle);
-        }
-        await frameDescription.click(selectorsObject.modernDescription, {
-          clickCount: 3,
-        });
-        await frameDescription.type(
-          selectorsObject.modernDescription,
-          `${descriptionBody}\n`,
-          { delay: 100 }
-        );
-      } else if (category === "vintage" && spec === "original") {
-        await frameDescription.click(
-          selectorsObject.vintageOriginalDescription,
-          { clickCount: 3 }
-        );
-        await frameDescription.type(
-          selectorsObject.vintageOriginalDescription,
-          descriptionBody,
-          { delay: 100 }
-        );
-      } else if (category === "vintage" && spec === "frames") {
-        await frameDescription.click(selectorsObject.vintageFramesDescription, {
-          clickCount: 3,
-        });
-        await frameDescription.type(
-          selectorsObject.vintageFramesDescription,
-          descriptionBody,
-          { delay: 100 }
-        );
-      }
-
-      if (category === "modern" && spec === "prescription") {
-        let [elHandle] = await frameDescription.$x("/html/body/text()");
-        await elHandle.evaluate((el) => {
-          el.remove();
-        }, elHandle);
-
-        await frameDescription.click(selectorsObject.modernDescription, {
-          clickCount: 3,
-        });
-        await frameDescription.type(
-          selectorsObject.modernDescription,
-          `${descriptionBody}\n`,
-          { delay: 100 }
-        );
-      } else if (category === "modern" && spec === "original") {
-        await frameDescription.click(selectorsObject.modernDescription, {
-          clickCount: 3,
-        });
-        await frameDescription.type(
-          selectorsObject.modernDescription,
-          descriptionBody,
-          { delay: 100 }
-        );
-      } else if (category === "modern" && spec === "frames") {
-        await frameDescription.click(selectorsObject.modernDescription, {
-          clickCount: 3,
-        });
-        await frameDescription.type(
-          selectorsObject.modernDescription,
-          descriptionBody,
-          { delay: 100 }
-        );
-      }
-
-      await page.click(selectorsObject.price, { clickCount: 2 });
-
-      await page.type(selectorsObject.price, descriptions.price, {
-        delay: 100,
-      });
-
-      await page.click("#actionbar > input.pbtn");
+      await page.click(selectorsObject.submit);
 
       if (j >= 1) {
-        await page.waitForSelector("#confirm_button_wrap > form > input.pbtn", {
-          visible: true,
-        });
+        await page.waitForSelector(selectorsObject.relist, { visible: true });
+
         const [response] = await Promise.all([
           page.waitForNavigation(),
-          await page.click("#confirm_button_wrap > form > input.pbtn"),
+          await page.click(selectorsObject.relist),
         ]);
         console.log(response);
       } else {
-        await page.waitForSelector(
-          "#confirm_layer_wrap > div:nth-child(4) > div.cfm-cnt > div:nth-child(5) > div:nth-child(2) > span > form:nth-child(1) > a",
-          { visible: true }
-        );
+        await page.waitForSelector(selectorsObject.list, { visible: true });
+
         const [response] = await Promise.all([
           page.waitForNavigation(),
-          await page.click(
-            "#confirm_layer_wrap > div:nth-child(4) > div.cfm-cnt > div:nth-child(5) > div:nth-child(2) > span > form:nth-child(1) > a"
-          ),
+          await page.click(selectorsObject.list),
         ]);
         console.log(response);
       }
 
       j++;
     }
+    browser.close();
   } catch (error) {
     console.error(error);
   }
 };
-
-listingGlasses(
-  "https://bulksell.ebay.com/ws/eBayISAPI.dll?SingleList&&DraftURL=https://www.ebay.com/sh/lst/drafts&ReturnURL=https://www.ebay.com/sh/lst/active&sellingMode=AddItem&templateId=6000494011&returnUrl=https://bulksell.ebay.com/ws/eBayISAPI.dll?SingleList",
-  1,
-  "vintage",
-  "prescription"
-);
 
 module.exports = listingGlasses;
