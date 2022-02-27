@@ -81,9 +81,7 @@ const detailsFilling = async (
     await page.keyboard.type(descriptions.bridge, { delay: 100 });
 
     if (descriptions.price === "20.00") {
-      await page.$$eval("#bestOffer", (checks) =>
-        checks.forEach((c) => (c.checked = false))
-      );
+      await page.$eval("#bestOffer", (el) => (el.checked = false));
     }
     await page.focus(selectorsObject.price);
 
