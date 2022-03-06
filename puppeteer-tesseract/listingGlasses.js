@@ -63,13 +63,13 @@ const listingGlasses = async (url, binNumber, category, spec) => {
         descriptions = await getTextFromImage(`${path}/${photos[i]}`, true);
       }
 
-      const descriptionBody = `${category == "vintage" ? "Vintage" : null} 
-     ${descriptions.brand !== "" ? descriptions.brand : null} 
-     ${descriptions.model !== "" ? descriptions.model : null} 
+      const descriptionBody = `${category == "vintage" ? "Vintage" : ""} 
+     ${descriptions.brand !== "" ? descriptions.brand : ""} 
+     ${descriptions.model !== "" ? descriptions.model : ""} 
       ${descriptions.color} 
       ${descriptions.style}
        ${spec === "original" ? "Sunglasses Frames " : "Sunglasses FRAMES ONLY"}
-       ${descriptions.made !== "" ? descriptions.made : null}`;
+       ${descriptions.made !== "" ? descriptions.made : ""}`;
 
       const photosSelected = photos
         .slice(i + 1, i + 5 + 1)
@@ -95,26 +95,24 @@ const listingGlasses = async (url, binNumber, category, spec) => {
 
       await fileChooser.accept([...photosSelected]);
 
-      await detailsFilling(
+      const arguments = [
         width,
         height,
         bridge,
         descriptions,
         descriptionBody,
         page,
-        category
-      );
+        category,
+      ];
+
+      await detailsFilling(arguments);
 
       const iFrameDescription = await page.$(frameDes);
       const frameDescription = await iFrameDescription.contentFrame();
-      await descriptionFilling(
-        category,
-        spec,
-        frameDescription,
-        descriptionBody,
-        page,
-        j
-      );
+
+      const args = [category, spec, frameDescription, descriptionBody, page];
+
+      await descriptionFilling(args, j);
 
       await page.click(selectorsObject.submit);
 

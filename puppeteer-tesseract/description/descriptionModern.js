@@ -1,13 +1,7 @@
 const { selectorsObject } = require("../selectors-urls.js");
 
-const descriptionModern = async (
-  category,
-  spec,
-  frameDescription,
-  descriptionBody,
-  page,
-  j
-) => {
+const descriptionModern = async (args, j) => {
+  const [category, spec, frameDescription, descriptionBody, page] = args;
   try {
     if (category === "modern" && spec === "prescription") {
       if (j === 0) {
