@@ -32,3 +32,5 @@ app.on("activate", () => {
 ipcMain.on("send-chosen-options", (event, args) => {
   main(args);
 });
+
+process.platform === "win32" && Menu.setApplicationMenu(null);
