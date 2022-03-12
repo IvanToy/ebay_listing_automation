@@ -8,18 +8,12 @@ exports.selectorsObject = {
   made: "#Listing\\.Item\\.ItemSpecific\\[Country\\/Region\\ of\\ Manufacture\\]",
   temple: "#Listing\\.Item\\.ItemSpecific\\[Temple\\ Length\\]",
   vintage: {
-    width: "#_st_CustomTag_18Val",
-    height: "#_st_CustomTag_19Val",
-    bridge: "#_st_CustomTag_20Val",
     descriptionPrescription: "body > div:nth-child(1)",
     descriptionOriginal: "body > div:nth-child(1)",
     descriptionFrames1: "body > font",
     descriptionFrames2: "body > div:nth-child(1) > font",
   },
   modern: {
-    width: "#Listing\\.Item\\.ItemSpecific\\[Lens\\ Width\\]",
-    height: "#_st_CustomTag_28Val",
-    bridge: "#_st_CustomTag_29Val",
     descriptionPrescription: "body > div:nth-child(1)",
     descriptionOriginal: "body > div:nth-child(1)",
     descriptionFrames: "body > div:nth-child(1)",

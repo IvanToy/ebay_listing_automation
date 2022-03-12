@@ -4,6 +4,7 @@ const chrome = require("chrome-cookies-secure");
 const getTextFromImage = require("./tesseract.js");
 const detailsFilling = require("./detailsFilling.js");
 const descriptionFilling = require("./descriptionFilling.js");
+const measurements = require("./measurements.js");
 const { selectorsObject, urlAndIdsObject } = require("./selectors-urls");
 
 const fsPromises = fs.promises;
@@ -11,24 +12,6 @@ const fsPromises = fs.promises;
 const listingGlasses = async (url, binNumber, category, spec) => {
   try {
     const path = `./Path/Path ${binNumber}`;
-
-    const width =
-      category === "vintage"
-        ? selectorsObject.vintage.width
-        : selectorsObject.modern.width;
-    const height =
-      category === "vintage"
-        ? selectorsObject.vintage.height
-        : selectorsObject.modern.height;
-    const bridge =
-      category === "vintage"
-        ? selectorsObject.vintage.bridge
-        : selectorsObject.modern.height;
-
-    const frameDes =
-      category === "vintage"
-        ? selectorsObject.frameDescriptionVintage
-        : selectorsObject.frameDescriptionModern;
 
     const cookies = await chrome.getCookiesPromised(
       urlAndIdsObject.ebay,
@@ -39,7 +22,7 @@ const listingGlasses = async (url, binNumber, category, spec) => {
     const browser = await puppeteer.launch({
       headless: false,
       defaultViewport: null,
-      slowMo: 250,
+      //slowMo: 250,
       args: ["--start-maximized"],
     });
 
@@ -53,6 +36,11 @@ const listingGlasses = async (url, binNumber, category, spec) => {
 
     const photos = await fsPromises.readdir(path);
 
+    const frameDes =
+      category === "vintage"
+        ? selectorsObject.frameDescriptionVintage
+        : selectorsObject.frameDescriptionModern;
+
     let j = 0;
 
     for (let i = 0; i < photos.length; i += 6) {
@@ -63,10 +51,10 @@ const listingGlasses = async (url, binNumber, category, spec) => {
         descriptions = await getTextFromImage(`${path}/${photos[i]}`, true);
       }
 
-      const descriptionBody = `${category == "vintage" ? "Vintage" : ""} 
-     ${descriptions.brand !== "" ? descriptions.brand : ""} 
-     ${descriptions.model !== "" ? descriptions.model : ""} 
-      ${descriptions.color} 
+      const descriptionBody = `${category == "vintage" ? "Vintage" : ""}
+     ${descriptions.brand !== "" ? descriptions.brand : ""}
+     ${descriptions.model !== "" ? descriptions.model : ""}
+      ${descriptions.color}
       ${descriptions.style}
        ${spec === "original" ? "Sunglasses Frames " : "Sunglasses FRAMES ONLY"}
        ${descriptions.made !== "" ? descriptions.made : ""}`;
@@ -95,10 +83,10 @@ const listingGlasses = async (url, binNumber, category, spec) => {
 
       await fileChooser.accept([...photosSelected]);
 
+      const measurements = await measurements(page, category);
+
       const arguments = [
-        width,
-        height,
-        bridge,
+        measurements,
         descriptions,
         descriptionBody,
         page,
@@ -142,4 +130,10 @@ const listingGlasses = async (url, binNumber, category, spec) => {
   }
 };
 
-module.exports = listingGlasses;
+listingGlasses(
+  "https://bulksell.ebay.com/ws/eBayISAPI.dll?SingleList&&DraftURL=https://www.ebay.com/sh/lst/drafts&ReturnURL=https://www.ebay.com/sh/lst/active&sellingMode=AddItem&templateId=6000494011&returnUrl=https://bulksell.ebay.com/ws/eBayISAPI.dll?SingleList",
+  1,
+  "vintage"
+);
+
+//module.exports = listingGlasses;

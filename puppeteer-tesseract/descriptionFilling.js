@@ -2,6 +2,7 @@ const descriptionVintage = require("./description/descriptionVintage.js");
 const descriptionModern = require("./description/descriptionModern.js");
 
 const descriptionFilling = async (args, j) => {
+  const [category] = args;
   try {
     if (category === "vintage") {
       await descriptionVintage(args, j);

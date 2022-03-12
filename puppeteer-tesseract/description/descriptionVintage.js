@@ -12,13 +12,12 @@ const descriptionVintage = async (args, j) => {
       }
       await frameDescription.click(
         selectorsObject.vintage.descriptionPrescription,
-        {
-          clickCount: 3,
-        }
+        { clickCount: 3 }
       );
+
       await frameDescription.type(
         selectorsObject.vintage.descriptionPrescription,
-        body,
+        descriptionBody,
         { delay: 100 }
       );
 
@@ -38,9 +37,7 @@ const descriptionVintage = async (args, j) => {
       if (j >= 1) {
         await frameDescription.click(
           selectorsObject.vintage.descriptionFrames2,
-          {
-            clickCount: 3,
-          }
+          { clickCount: 3 }
         );
         await frameDescription.type(
           selectorsObject.vintage.descriptionFrames2,
@@ -51,9 +48,7 @@ const descriptionVintage = async (args, j) => {
       } else {
         await frameDescription.click(
           selectorsObject.vintage.descriptionFrames1,
-          {
-            clickCount: 3,
-          }
+          { clickCount: 3 }
         );
         await frameDescription.type(
           selectorsObject.vintage.descriptionFrames1,

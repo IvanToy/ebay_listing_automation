@@ -11,13 +11,11 @@ const descriptionModern = async (args, j) => {
         }, elHandle);
       }
       await frameDescription.click(
-        selectorsObject.vintage.descriptionPrescription,
-        {
-          clickCount: 3,
-        }
+        selectorsObject.modern.descriptionPrescription,
+        { clickCount: 3 }
       );
       await frameDescription.type(
-        selectorsObject.vintage.descriptionPrescription,
+        selectorsObject.modern.descriptionPrescription,
         descriptionBody,
         { delay: 100 }
       );
