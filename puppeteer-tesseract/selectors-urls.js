@@ -14,6 +14,7 @@ exports.selectorsObject = {
     descriptionFrames2: "body > div:nth-child(1) > font",
   },
   modern: {
+    width: "#Listing\\.Item\\.ItemSpecific\\[Lens\\ Width\\]",
     descriptionPrescription: "body > div:nth-child(1)",
     descriptionOriginal: "body > div:nth-child(1)",
     descriptionFrames: "body > div:nth-child(1)",

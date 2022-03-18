@@ -4,7 +4,7 @@ const chrome = require("chrome-cookies-secure");
 const getTextFromImage = require("./tesseract.js");
 const detailsFilling = require("./detailsFilling.js");
 const descriptionFilling = require("./descriptionFilling.js");
-const measurements = require("./measurements.js");
+const measurement = require("./measurement.js");
 const { selectorsObject, urlAndIdsObject } = require("./selectors-urls");
 
 const fsPromises = fs.promises;
@@ -22,7 +22,7 @@ const listingGlasses = async (url, binNumber, category, spec) => {
     const browser = await puppeteer.launch({
       headless: false,
       defaultViewport: null,
-      //slowMo: 250,
+      slowMo: 250,
       args: ["--start-maximized"],
     });
 
@@ -83,7 +83,7 @@ const listingGlasses = async (url, binNumber, category, spec) => {
 
       await fileChooser.accept([...photosSelected]);
 
-      const measurements = await measurements(page, category);
+      const measurements = await measurement(page);
 
       const arguments = [
         measurements,
@@ -130,10 +130,4 @@ const listingGlasses = async (url, binNumber, category, spec) => {
   }
 };
 
-listingGlasses(
-  "https://bulksell.ebay.com/ws/eBayISAPI.dll?SingleList&&DraftURL=https://www.ebay.com/sh/lst/drafts&ReturnURL=https://www.ebay.com/sh/lst/active&sellingMode=AddItem&templateId=6000494011&returnUrl=https://bulksell.ebay.com/ws/eBayISAPI.dll?SingleList",
-  1,
-  "vintage"
-);
-
-//module.exports = listingGlasses;
+module.exports = listingGlasses;

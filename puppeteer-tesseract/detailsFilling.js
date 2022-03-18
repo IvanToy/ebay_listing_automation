@@ -94,7 +94,10 @@ const detailsFilling = async (arguments) => {
       });
     }
 
-    await page.focus(measurements.width);
+    let width =
+      category === "modern" ? selectorsObject.modern.width : measurements.width;
+
+    await page.focus(width);
 
     await page.click(measurements.width, { clickCount: 3 });
 

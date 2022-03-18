@@ -39,8 +39,8 @@ const descriptionModern = async (args, j) => {
         descriptionBody,
         { delay: 100 }
       );
+      await page.keyboard.press("Enter");
     }
-    await page.keyboard.press("Enter");
   } catch (error) {
     console.error(error);
   }
