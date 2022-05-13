@@ -3,8 +3,8 @@ const puppeteer = require("puppeteer");
 const chrome = require("chrome-cookies-secure");
 const getTextFromImage = require("./tesseract.js");
 const detailsFilling = require("./detailsFilling.js");
-const descriptionFilling = require("./descriptionFilling.js");
-const measurement = require("./measurement.js");
+const descriptionFilling = require("./description/descriptionFilling");
+const getSpecifications = require("./specification/getSpecifications");
 const { selectorsObject, urlAndIdsObject } = require("./selectors-urls");
 
 const fsPromises = fs.promises;
@@ -47,17 +47,13 @@ const listingGlasses = async (url, binNumber, category, spec) => {
       let descriptions;
       descriptions = await getTextFromImage(`${path}/${photos[i]}`);
 
-      if (i + 6 + 1 > photos.length) {
-        descriptions = await getTextFromImage(`${path}/${photos[i]}`, true);
-      }
-
       const descriptionBody = `${category == "vintage" ? "Vintage" : ""}
      ${descriptions.brand !== "" ? descriptions.brand : ""}
      ${descriptions.model !== "" ? descriptions.model : ""}
       ${descriptions.color}
       ${descriptions.style}
-       ${spec === "original" ? "Sunglasses Frames " : "Sunglasses FRAMES ONLY"}
-       ${descriptions.made !== "" ? descriptions.made : ""}`;
+      ${spec === "original" ? "Sunglasses Frames " : "Sunglasses FRAMES ONLY"}
+      ${descriptions.made !== "" ? descriptions.made : ""}`;
 
       const photosSelected = photos
         .slice(i + 1, i + 5 + 1)
@@ -83,10 +79,10 @@ const listingGlasses = async (url, binNumber, category, spec) => {
 
       await fileChooser.accept([...photosSelected]);
 
-      const measurements = await measurement(page);
+      const specifications = await getSpecifications(page, category);
 
       const arguments = [
-        measurements,
+        specifications,
         descriptions,
         descriptionBody,
         page,
@@ -107,19 +103,17 @@ const listingGlasses = async (url, binNumber, category, spec) => {
       if (j >= 1) {
         await page.waitForSelector(selectorsObject.relist, { visible: true });
 
-        const [response] = await Promise.all([
+        await Promise.all([
           page.waitForNavigation(),
           await page.click(selectorsObject.relist),
         ]);
-        console.log(response);
       } else {
         await page.waitForSelector(selectorsObject.list, { visible: true });
 
-        const [response] = await Promise.all([
+        await Promise.all([
           page.waitForNavigation(),
           await page.click(selectorsObject.list),
         ]);
-        console.log(response);
       }
 
       j++;

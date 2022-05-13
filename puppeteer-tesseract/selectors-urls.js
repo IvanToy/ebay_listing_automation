@@ -1,12 +1,6 @@
 exports.selectorsObject = {
   title: "#editpane_title",
   label: "#editpane_skuNumber",
-  brand: "#Listing\\.Item\\.ItemSpecific\\[Brand\\]",
-  style: "#Listing\\.Item\\.ItemSpecific\\[Style\\]",
-  color: "#Listing\\.Item\\.ItemSpecific\\[Frame\\ Color\\]",
-  material: "#Listing\\.Item\\.ItemSpecific\\[Frame\\ Material\\]",
-  made: "#Listing\\.Item\\.ItemSpecific\\[Country\\/Region\\ of\\ Manufacture\\]",
-  temple: "#Listing\\.Item\\.ItemSpecific\\[Temple\\ Length\\]",
   vintage: {
     descriptionPrescription: "body > div:nth-child(1)",
     descriptionOriginal: "body > div:nth-child(1)",

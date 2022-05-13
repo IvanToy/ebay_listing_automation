@@ -24,6 +24,12 @@ const submitHandler = (event) => {
   }
 
   enteredBinNumber.value = "";
+  modernGlasses.value !== "choose-option"
+    ? (modernGlasses.value = "choose-option")
+    : null;
+  vintageGlasses.value !== "choose-option"
+    ? (vintageGlasses.value = "choose-option")
+    : null;
 };
 
 form.addEventListener("submit", submitHandler);
