@@ -1,5 +1,5 @@
-const descriptionVintage = require("./description/descriptionVintage.js");
-const descriptionModern = require("./description/descriptionModern.js");
+const descriptionVintage = require("./descriptionVintage.js");
+const descriptionModern = require("./descriptionModern.js");
 
 const descriptionFilling = async (args, j) => {
   const [category] = args;

@@ -23,8 +23,29 @@ const getAdditionalSpecs = async (page, category) => {
           if (item.id === "optItemSpec" && children[i].hasAttribute("id")) {
             let [title] = children[i].id.match(/(?<=\[).*(?=\])/g);
             let [id] = children[i].id.match(/(?<=\_).*/g);
-            if (listOfSpecs.includes(title))
-              specs[title.toLowerCase()] = `#${id}`;
+            const generalPart = id.split(/\W/g).slice(0, 3).join("\\.");
+            const uniquePart = id.split(/\W/g).slice(3).length
+              ? id.split(/\W/g).slice(3).join("\\ ").trim()
+              : id.split(/\W/g).slice(3).join("\\");
+            if (
+              listOfSpecs.includes(title) &&
+              title !== "Country/Region of Manufacture"
+            )
+              specs[title.toLowerCase()] = `#${generalPart}\\[${uniquePart}]`;
+            if (
+              listOfSpecs.includes(title) &&
+              title === "Country/Region of Manufacture"
+            ) {
+              const part1 = title.split(/\s/g).slice(1).join("\\ ").trim();
+              const part2 = title
+                .split(/\s/g)
+                .slice(0, 1)[0]
+                .split("/")
+                .join("/");
+              specs[
+                title.toLowerCase()
+              ] = `#${generalPart}\\[${part2}\\ ${part1}\\]`;
+            }
           } else if (
             item.id === "optItemSpec" &&
             !children[i].hasAttribute("id")

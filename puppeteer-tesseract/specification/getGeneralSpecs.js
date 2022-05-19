@@ -23,8 +23,12 @@ const getGeneralSpecs = async (page) => {
             let [inputTitle, inputId] = div;
             let [title] = inputTitle.id.match(/(?<=\[).*(?=\])/g);
             let [id] = inputId.children[1].id.match(/.*(?=\_)/g);
+            const generalPart = id.split(/\W/g).slice(0, 3).join("\\.");
+            const uniquePart = id.split(/\W/g).slice(3).length
+              ? id.split(/\W/g).slice(3).join("\\ ").trim()
+              : id.split(/\W/g).slice(3).join("\\");
             if (listOfSpecs.includes(title))
-              specs[title.toLowerCase()] = `#${id}`;
+              specs[title.toLowerCase()] = `#${generalPart}\\[${uniquePart}]`;
           }
         }
       }
