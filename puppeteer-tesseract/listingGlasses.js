@@ -3,8 +3,8 @@ const puppeteer = require("puppeteer");
 const chrome = require("chrome-cookies-secure");
 const getTextFromImage = require("./tesseract.js");
 const detailsFilling = require("./detailsFilling.js");
-const descriptionFilling = require("./description/descriptionFilling");
-const getSpecifications = require("./specification/getSpecifications");
+const descriptionFilling = require("./description/descriptionFilling.js");
+const measurements = require("./measurements.js");
 const { selectorsObject, urlAndIdsObject } = require("./selectors-urls");
 
 const fsPromises = fs.promises;
@@ -79,10 +79,10 @@ const listingGlasses = async (url, binNumber, category, spec) => {
 
       await fileChooser.accept([...photosSelected]);
 
-      const specifications = await getSpecifications(page, category);
+      const measurements = await measurements(page, category);
 
       const arguments = [
-        specifications,
+        measurements,
         descriptions,
         descriptionBody,
         page,

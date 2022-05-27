@@ -17,132 +17,101 @@ const detailsFilling = async (arguments) => {
     await page.click(specifications.general.brand, { clickCount: 3 });
 
     descriptions.brand === ""
-      ? await page.type(specifications.general.brand, "Unbranded ", {
+      ? await page.type(selectorsObject.brand, "Unbranded ", {
           delay: 100,
         })
-      : await page.type(specifications.general.brand, descriptions.brand, {
+      : await page.type(selectorsObject.brand, descriptions.brand, {
           delay: 100,
         });
 
-    await page.click(specifications.general.style, { clickCount: 3 });
+    await page.click(selectorsObject.style, { clickCount: 3 });
 
-    await page.type(specifications.general.style, descriptions.style, {
+    await page.type(selectorsObject.style, descriptions.style, {
       delay: 100,
     });
 
-    await page.click(specifications.general["frame color"], { clickCount: 3 });
+    await page.click(selectorsObject.color, { clickCount: 3 });
 
-    await page.type(specifications.general["frame color"], descriptions.color, {
+    await page.type(selectorsObject.color, descriptions.color, {
       delay: 100,
     });
 
-    await page.click(specifications.additional["frame material"], {
+    await page.click(selectorsObject.material, {
       clickCount: 3,
     });
 
-    await page.type(
-      specifications.additional["frame material"],
-      descriptions.material,
-      {
-        delay: 100,
-      }
-    );
+    await page.type(selectorsObject.material, descriptions.material, {
+      delay: 100,
+    });
 
     if (category === "modern") {
       await page.click("#v4-84 > a.eib-more");
 
-      await page.focus(
-        specifications.additional["country/region of manufacture"]
-      );
+      await page.focus(selectorsObject.made);
 
-      await page.click(
-        specifications.additional["country/region of manufacture"],
-        { clickCount: 3 }
-      );
+      await page.click(selectorsObject.made, { clickCount: 3 });
 
       descriptions.made === ""
-        ? await page.type(
-            specifications.additional["country/region of manufacture"],
-            " ",
-            { delay: 100 }
-          )
-        : await page.type(
-            specifications.additional["country/region of manufacture"],
-            descriptions.made,
-            {
-              delay: 100,
-            }
-          );
+        ? await page.type(selectorsObject.made, " ", { delay: 100 })
+        : await page.type(selectorsObject.made, descriptions.made, {
+            delay: 100,
+          });
     } else {
-      await page.focus(
-        specifications.additional["country/region of manufacture"]
-      );
+      await page.focus(selectorsObject.made);
 
-      await page.click(
-        specifications.additional["country/region of manufacture"],
-        { clickCount: 3 }
-      );
+      await page.click(selectorsObject.made, { clickCount: 3 });
 
       descriptions.made === ""
-        ? await page.type(
-            specifications.additional["country/region of manufacture"],
-            " ",
-            { delay: 100 }
-          )
-        : await page.type(
-            specifications.additional["country/region of manufacture"],
-            descriptions.made,
-            {
-              delay: 100,
-            }
-          );
+        ? await page.type(selectorsObject.made, " ", { delay: 100 })
+        : await page.type(selectorsObject.made, descriptions.made, {
+            delay: 100,
+          });
     }
 
-    await page.focus(specifications.additional["temple length"]);
+    await page.focus(selectorsObject.temple);
 
-    await page.click(specifications.additional["temple length"], {
+    await page.click(selectorsObject.temple, {
       clickCount: 3,
     });
 
     descriptions.temple === ""
-      ? await page.type(specifications.additional["temple length"], " ", {
+      ? await page.type(selectorsObject.temple, " ", {
           delay: 100,
         })
-      : await page.type(
-          specifications.additional["temple length"],
-          descriptions.temple,
-          {
-            delay: 100,
-          }
-        );
+      : await page.type(selectorsObject.temple, descriptions.temple, {
+          delay: 100,
+        });
 
-    await page.focus(specifications.additional.width);
+    let width =
+      category === "modern" ? selectorsObject.modern.width : measurements.width;
 
-    await page.click(specifications.additional.width, { clickCount: 3 });
+    await page.focus(width);
+
+    await page.click(width, { clickCount: 3 });
 
     descriptions.width === ""
-      ? await page.type(specifications.additional.width, " ", { delay: 100 })
-      : await page.type(specifications.additional.width, descriptions.width, {
+      ? await page.type(width, " ", { delay: 100 })
+      : await page.type(width, descriptions.width, {
           delay: 100,
         });
 
-    await page.focus(specifications.additional.height);
+    await page.focus(measurements.height);
 
-    await page.click(specifications.additional.height, { clickCount: 3 });
+    await page.click(measurements.height, { clickCount: 3 });
 
     descriptions.height === ""
-      ? await page.type(specifications.additional.height, " ", { delay: 100 })
-      : await page.type(specifications.additional.height, descriptions.height, {
+      ? await page.type(measurements.height, " ", { delay: 100 })
+      : await page.type(measurements.height, descriptions.height, {
           delay: 100,
         });
 
-    await page.focus(specifications.additional.bridge);
+    await page.focus(measurements.bridge);
 
-    await page.click(specifications.additional.bridge, { clickCount: 3 });
+    await page.click(measurements.bridge, { clickCount: 3 });
 
     descriptions.bridge === ""
-      ? await page.type(specifications.additional.bridge, " ", { delay: 100 })
-      : await page.type(specifications.additional.bridge, descriptions.bridge, {
+      ? await page.type(measurements.bridge, " ", { delay: 100 })
+      : await page.type(measurements.bridge, descriptions.bridge, {
           delay: 100,
         });
 

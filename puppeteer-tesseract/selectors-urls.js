@@ -1,6 +1,12 @@
 exports.selectorsObject = {
   title: "#editpane_title",
   label: "#editpane_skuNumber",
+  brand: "#Listing\\.Item\\.ItemSpecific\\[Brand\\]",
+  style: "#Listing\\.Item\\.ItemSpecific\\[Style\\]",
+  color: "#Listing\\.Item\\.ItemSpecific\\[Frame\\ Color\\]",
+  material: "#Listing\\.Item\\.ItemSpecific\\[Frame\\ Material\\]",
+  made: "#Listing\\.Item\\.ItemSpecific\\[Country\\/Region\\ of\\ Manufacture\\]",
+  temple: "#Listing\\.Item\\.ItemSpecific\\[Temple\\ Length\\]",
   vintage: {
     descriptionPrescription: "body > div:nth-child(1)",
     descriptionOriginal: "body > div:nth-child(1)",
@@ -13,8 +19,8 @@ exports.selectorsObject = {
     descriptionOriginal: "body > div:nth-child(1)",
     descriptionFrames: "body > div:nth-child(1)",
   },
-  frameDescriptionVintage: "#v4-59txtEdit_st",
-  frameDescriptionModern: "#v4-89txtEdit_st",
+  frameDescriptionVintage: "#v4-60txtEdit_st",
+  frameDescriptionModern: "#v4-81txtEdit_st",
   deletePhotosButton:
     "#tm-topMsg > div.recommendedCount.msg > div.single > div.text.row-fluid > div.copyfrom > a.deleteAll",
   confirmDelete: "#puDlg_0 > span > div.dlg > div > a.b1.btn.btn-m.btn-ter",
