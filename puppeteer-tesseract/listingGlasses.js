@@ -4,7 +4,7 @@ const chrome = require("chrome-cookies-secure");
 const getTextFromImage = require("./tesseract.js");
 const detailsFilling = require("./detailsFilling.js");
 const descriptionFilling = require("./description/descriptionFilling.js");
-const measurement = require("./measurements.js");
+const measurements = require("./measurements.js");
 const getIframe = require("./getIFrames.js");
 const { selectorsObject, urlAndIdsObject } = require("./selectors-urls");
 
@@ -12,8 +12,7 @@ const fsPromises = fs.promises;
 
 const listingGlasses = async (url, binNumber, category, spec) => {
   try {
-    //const path = `./Path/Path ${binNumber}`;
-
+    const path = `./Path/Path ${binNumber}`;
 
     const cookies = await chrome.getCookiesPromised(
       urlAndIdsObject.ebay,
@@ -36,7 +35,7 @@ const listingGlasses = async (url, binNumber, category, spec) => {
       waitUntil: "networkidle2",
     });
 
-    // const photos = await fsPromises.readdir(path);
+    const photos = await fsPromises.readdir(path);
 
     const frames = await getIframe(page, category);
     console.log(frames);
@@ -78,12 +77,10 @@ const listingGlasses = async (url, binNumber, category, spec) => {
 
       await fileChooser.accept([...photosSelected]);
 
-
       const measurement = await measurements(page, category);
 
       const arguments = [
         measurement,
-
         descriptions,
         descriptionBody,
         page,
@@ -92,7 +89,6 @@ const listingGlasses = async (url, binNumber, category, spec) => {
       ];
 
       await detailsFilling(arguments);
-
 
       const iFrameDescription = await page.$(frames.descriptionFrame);
 
