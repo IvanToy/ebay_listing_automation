@@ -14,18 +14,14 @@ exports.selectorsObject = {
     descriptionFrames2: "body > div:nth-child(1) > font",
   },
   modern: {
-    width: "#Listing\\.Item\\.ItemSpecific\\[Lens\\ Width\\]",
     descriptionPrescription: "body > div:nth-child(1)",
     descriptionOriginal: "body > div:nth-child(1)",
     descriptionFrames: "body > div:nth-child(1)",
   },
-  frameDescriptionVintage: "#v4-60txtEdit_st",
-  frameDescriptionModern: "#v4-81txtEdit_st",
   deletePhotosButton:
     "#tm-topMsg > div.recommendedCount.msg > div.single > div.text.row-fluid > div.copyfrom > a.deleteAll",
   confirmDelete: "#puDlg_0 > span > div.dlg > div > a.b1.btn.btn-m.btn-ter",
   price: "#binPrice",
-  photos: "#uploader_iframe",
   upload: "#inpWrapper > span",
   submit: "#actionbar > input.pbtn",
   relist: "#confirm_button_wrap > form > input.pbtn",

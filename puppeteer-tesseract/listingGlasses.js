@@ -4,14 +4,16 @@ const chrome = require("chrome-cookies-secure");
 const getTextFromImage = require("./tesseract.js");
 const detailsFilling = require("./detailsFilling.js");
 const descriptionFilling = require("./description/descriptionFilling.js");
-const measurements = require("./measurements.js");
+const measurement = require("./measurements.js");
+const getIframe = require("./getIFrames.js");
 const { selectorsObject, urlAndIdsObject } = require("./selectors-urls");
 
 const fsPromises = fs.promises;
 
 const listingGlasses = async (url, binNumber, category, spec) => {
   try {
-    const path = `./Path/Path ${binNumber}`;
+    //const path = `./Path/Path ${binNumber}`;
+
 
     const cookies = await chrome.getCookiesPromised(
       urlAndIdsObject.ebay,
@@ -34,13 +36,10 @@ const listingGlasses = async (url, binNumber, category, spec) => {
       waitUntil: "networkidle2",
     });
 
-    const photos = await fsPromises.readdir(path);
+    // const photos = await fsPromises.readdir(path);
 
-    const frameDes =
-      category === "vintage"
-        ? selectorsObject.frameDescriptionVintage
-        : selectorsObject.frameDescriptionModern;
-
+    const frames = await getIframe(page, category);
+    console.log(frames);
     let j = 0;
 
     for (let i = 0; i < photos.length; i += 6) {
@@ -59,7 +58,7 @@ const listingGlasses = async (url, binNumber, category, spec) => {
         .slice(i + 1, i + 5 + 1)
         .map((photo) => `${path}/${photo}`);
 
-      const iFramePhoto = await page.$(selectorsObject.photos);
+      const iFramePhoto = await page.$(frames.photoFrame);
       const framePhoto = await iFramePhoto.contentFrame();
 
       if (j >= 1) {
@@ -79,19 +78,24 @@ const listingGlasses = async (url, binNumber, category, spec) => {
 
       await fileChooser.accept([...photosSelected]);
 
-      const measurements = await measurements(page, category);
+
+      const measurement = await measurements(page, category);
 
       const arguments = [
-        measurements,
+        measurement,
+
         descriptions,
         descriptionBody,
         page,
         category,
+        frames,
       ];
 
       await detailsFilling(arguments);
 
-      const iFrameDescription = await page.$(frameDes);
+
+      const iFrameDescription = await page.$(frames.descriptionFrame);
+
       const frameDescription = await iFrameDescription.contentFrame();
 
       const args = [category, spec, frameDescription, descriptionBody, page];

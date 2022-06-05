@@ -1,8 +1,14 @@
 const { selectorsObject } = require("./selectors-urls.js");
 
 const detailsFilling = async (arguments) => {
-  const [specifications, descriptions, descriptionBody, page, category] =
-    arguments;
+  const [
+    specifications,
+    descriptions,
+    descriptionBody,
+    page,
+    category,
+    frames,
+  ] = arguments;
   try {
     await page.click(selectorsObject.title, { clickCount: 3 });
 
@@ -45,7 +51,7 @@ const detailsFilling = async (arguments) => {
     });
 
     if (category === "modern") {
-      await page.click("#v4-84 > a.eib-more");
+      await page.click(frames.additionalButton);
 
       await page.focus(selectorsObject.made);
 
@@ -82,12 +88,9 @@ const detailsFilling = async (arguments) => {
           delay: 100,
         });
 
-    let width =
-      category === "modern" ? selectorsObject.modern.width : measurements.width;
+    await page.focus(measurements.width);
 
-    await page.focus(width);
-
-    await page.click(width, { clickCount: 3 });
+    await page.click(measurements.width, { clickCount: 3 });
 
     descriptions.width === ""
       ? await page.type(width, " ", { delay: 100 })
